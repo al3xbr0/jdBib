@@ -1,11 +1,9 @@
-package io.jdBib.Parsing;
-
-import io.jdBib.Entry.BibEntry;
+package io.jdbib.bibmodel;
 
 import java.util.List;
 import java.util.Map;
 
-public class BibResult {
+public class BibFile {
     private final List<String> comments;
     private final Map<String, String> strings;
     private final List<BibEntry> entries;
@@ -22,7 +20,7 @@ public class BibResult {
         return entries;
     }
 
-    public BibResult(List<String> comments, Map<String, String> strings, List<BibEntry> entries) {
+    public BibFile(List<String> comments, Map<String, String> strings, List<BibEntry> entries) {
         this.comments = comments;
         this.strings = strings;
         this.entries = entries;

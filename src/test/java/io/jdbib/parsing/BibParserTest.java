@@ -1,9 +1,10 @@
-package io.jdBib.Parsing;
+package io.jdbib.parsing;
 
-import io.jdBib.Entry.BibEntry;
-import io.jdBib.Entry.FieldWrapper;
-import io.jdBib.Entry.Types.EntryType;
-import io.jdBib.Entry.Types.FieldType;
+import io.jdbib.bibmodel.BibEntry;
+import io.jdbib.bibmodel.BibFile;
+import io.jdbib.bibmodel.FieldWrapper;
+import io.jdbib.bibmodel.types.EntryType;
+import io.jdbib.bibmodel.types.FieldType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ class BibParserTest {
                     "  publisher={McGraw-Hill Education},\n" +
                     "}";
             BibParser parser = new BibParser(in);
-            BibResult result = parser.parse();
+            BibFile result = parser.parse();
             var actual = result.getEntries().get(0);
 
             Assertions.assertEquals(expected, actual);

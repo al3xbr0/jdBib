@@ -1,4 +1,4 @@
-package io.jdBib.Entry.Types;
+package io.jdbib.bibmodel.types;
 
 public enum FieldType {
     ADDRESS("address"),

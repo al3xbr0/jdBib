@@ -1,4 +1,4 @@
-package io.jdBib.Entry;
+package io.jdbib.bibmodel;
 
 import java.util.AbstractMap;
 

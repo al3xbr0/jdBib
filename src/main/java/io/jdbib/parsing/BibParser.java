@@ -1,7 +1,8 @@
-package io.jdBib.Parsing;
+package io.jdbib.parsing;
 
-import io.jdBib.Entry.BibEntry;
-import io.jdBib.Entry.FieldWrapper;
+import io.jdbib.bibmodel.BibEntry;
+import io.jdbib.bibmodel.BibFile;
+import io.jdbib.bibmodel.FieldWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -206,7 +207,7 @@ public class BibParser {
         }
     }
 
-    public BibResult parse() throws BibParserException {
+    public BibFile parse() throws BibParserException {
         if (position != 0) {
             throw new BibParserException("File is already parsed");
         }
@@ -229,6 +230,6 @@ public class BibParser {
             }
             match('}');
         }
-        return new BibResult(comments, strings, entries);
+        return new BibFile(comments, strings, entries);
     }
 }

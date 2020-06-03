@@ -1,7 +1,7 @@
-package io.jdBib.Entry;
+package io.jdbib.bibmodel;
 
-import io.jdBib.Entry.Types.EntryType;
-import io.jdBib.Entry.Types.FieldType;
+import io.jdbib.bibmodel.types.EntryType;
+import io.jdbib.bibmodel.types.FieldType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

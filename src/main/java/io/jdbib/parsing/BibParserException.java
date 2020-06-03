@@ -1,4 +1,4 @@
-package io.jdBib.Parsing;
+package io.jdbib.parsing;
 
 public class BibParserException extends Exception {
 
