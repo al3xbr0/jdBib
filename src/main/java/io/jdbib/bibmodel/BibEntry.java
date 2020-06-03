@@ -4,12 +4,13 @@ import io.jdbib.bibmodel.types.EntryType;
 import io.jdbib.bibmodel.types.FieldType;
 
 import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class BibEntry {
     private final EntryType type;
     private String key;
-    public final EnumMap<FieldType, String> fields = new EnumMap<>(FieldType.class);
+    private final Map<FieldType, String> fields = new EnumMap<>(FieldType.class);
     /*{
         @Override
         public String get(Object key) {
@@ -51,7 +52,7 @@ public class BibEntry {
         this.key = key;
     }
 
-    public EnumMap<FieldType, String> getFields() {
+    public Map<FieldType, String> getFields() {
         return new EnumMap<>(fields);
     }
 

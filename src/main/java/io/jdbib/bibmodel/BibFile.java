@@ -1,5 +1,6 @@
 package io.jdbib.bibmodel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class BibFile {
     }
 
     public List<BibEntry> getEntries() {
-        return entries;
+        return new ArrayList<>(entries);
     }
 
     public BibFile(List<String> comments, Map<String, String> strings, List<BibEntry> entries) {

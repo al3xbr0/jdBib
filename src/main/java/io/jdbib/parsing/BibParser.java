@@ -13,7 +13,7 @@ public class BibParser {
     private final String input;
 
     private int position;
-    BibEntry currentEntry;
+    private BibEntry currentEntry;
 
     private final List<String> comments = new ArrayList<>();
     private final Map<String, String> strings = new HashMap<>();
