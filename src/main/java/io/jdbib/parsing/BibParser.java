@@ -24,19 +24,42 @@ public class BibParser {
         this.input = input != null ? input + "\n" : "";
     }
 
+    public BibFile parse() throws BibParserException {
+        if (position != 0) {
+            throw new BibParserException("File is already parsed");
+        }
+        while (tryMatch('@')) {
+            String d = directive().toUpperCase();
+            match('{');
+            switch (d) {
+                case "@COMMENT":
+                    comment();
+                    break;
+                case "@STRING":
+                    string();
+                    break;
+                case "@PREAMBLE":
+                    valueBuild();
+                    break;
+                default:
+                    entryBody(d);
+                    break;
+            }
+            match('}');
+        }
+        return new BibFile(comments, strings, entries);
+    }
+
     private int getErrLine() {
         String s = input.substring(0, position);
-        //int column = s.length() - s.lastIndexOf("\n");
         return s.length() - s.replace("\n", "").length() + 1;
     }
 
-    private boolean isWhitespace(char c) {
-        return (c == ' ' || c == '\r' || c == '\t' || c == '\n');
-    }
-
     private void skipWhitespace() {
-        while (isWhitespace(input.charAt(position))) {
-            if (++position >= input.length()) return;
+        while (Character.isWhitespace(input.charAt(position))) {
+            if (++position >= input.length()) {
+                return;
+            }
         }
         if (input.charAt(position) == '%') {
             while (input.charAt(position) != '\n') {
@@ -118,16 +141,6 @@ public class BibParser {
         }
     }
 
-    private String valueBuild() throws BibParserException {
-        List<String> values = new ArrayList<>();
-        values.add(singleValue());
-        while (tryMatch('#')) {
-            match('#');
-            values.add(singleValue());
-        }
-        return String.join("", values);
-    }
-
     private String key() throws BibParserException {
         int start = position;
         while (true) {
@@ -142,12 +155,22 @@ public class BibParser {
         }
     }
 
+    private String valueBuild() throws BibParserException {
+        List<String> values = new ArrayList<>();
+        values.add(singleValue());
+        while (tryMatch('#')) {
+            match('#');
+            values.add(singleValue());
+        }
+        return String.join("", values);
+    }
+
     private FieldWrapper fieldBuilder() throws BibParserException {
         String k = key();
         if (tryMatch('=')) {
             match('=');
             String v = valueBuild();
-            v = v.replaceAll("\\s*\\n+\\s*", " ").replaceAll("\\s+$", "");
+            v = v.replaceAll("\\s*\\n+\\s*", " ").strip();
             return new FieldWrapper(k, v);
         } else {
             throw new BibParserException("'key = value' expected, equals sign missing", getErrLine());
@@ -205,31 +228,5 @@ public class BibParser {
                 return;
             }
         }
-    }
-
-    public BibFile parse() throws BibParserException {
-        if (position != 0) {
-            throw new BibParserException("File is already parsed");
-        }
-        while (tryMatch('@')) {
-            String d = directive().toUpperCase();
-            match('{');
-            switch (d) {
-                case "@COMMENT":
-                    comment();
-                    break;
-                case "@STRING":
-                    string();
-                    break;
-                case "@PREAMBLE":
-                    valueBuild();
-                    break;
-                default:
-                    entryBody(d);
-                    break;
-            }
-            match('}');
-        }
-        return new BibFile(comments, strings, entries);
     }
 }

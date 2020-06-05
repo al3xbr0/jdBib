@@ -5,7 +5,6 @@ import io.jdbib.bibmodel.BibFile;
 import io.jdbib.bibmodel.FieldWrapper;
 import io.jdbib.bibmodel.types.EntryType;
 import io.jdbib.bibmodel.types.FieldType;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +19,7 @@ class BibParserTest {
                 .addField("publisher", "McGraw-Hill Education");
         try {
             String in = "@BOOK{Kundur-1994,\n" +
-                    "  title={Power System Stability and Control" +
+                    "  title={Power System Stability and Control " +
                     "  " +
                     "  },\n" +
                     "  Author={Kundur, P.},\n" +
@@ -31,7 +30,7 @@ class BibParserTest {
             BibFile result = parser.parse();
             var actual = result.getEntries().get(0);
 
-            Assertions.assertEquals(expected, actual);
+            assertEquals(expected, actual);
             assertThrows(BibParserException.class, parser::parse,
                     "Parser error:\nFile is already parsed");
         } catch (BibParserException e) {

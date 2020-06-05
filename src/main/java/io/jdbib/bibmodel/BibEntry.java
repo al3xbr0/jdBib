@@ -62,8 +62,7 @@ public class BibEntry {
     }
 
     public BibEntry(String type, String key) {
-        this.type = EntryType.valueOf(type.toUpperCase());
-        setKey(key);
+        this(EntryType.valueOf(type.toUpperCase()), key);
     }
 
     public BibEntry addField(FieldWrapper field) {

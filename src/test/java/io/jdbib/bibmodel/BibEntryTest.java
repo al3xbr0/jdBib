@@ -2,7 +2,6 @@ package io.jdbib.bibmodel;
 
 import io.jdbib.bibmodel.types.EntryType;
 import io.jdbib.bibmodel.types.FieldType;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +17,7 @@ class BibEntryTest {
         assertThrows(IllegalArgumentException.class, () -> entry.addField("testfield", "testvalue"));
 
         var fields = entry.getFields();
-        Assertions.assertEquals(EntryType.BOOK, entry.getType());
+        assertEquals(EntryType.BOOK, entry.getType());
         assertEquals("Kundur-1994", entry.getKey());
         assertEquals("Power System Stability and Control", fields.get(FieldType.TITLE));
         assertEquals("Kundur, P.", fields.get(FieldType.AUTHOR));
