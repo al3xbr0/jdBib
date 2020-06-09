@@ -73,9 +73,7 @@ public class DuplicatesSearch {
         String field2 = fields2.get(type);
         double similarity;
         switch (type) {
-            case DOI:
-            case EPRINT:
-            case ISBN: //TODO
+            case DOI, EPRINT, ISBN: //TODO
                 return field1 != null
                         && field1.equals(field2);
             case EDITION:
@@ -133,17 +131,12 @@ public class DuplicatesSearch {
     }
 
     private static double fieldWeight(FieldType type) {
-        switch (type) {
-            case TITLE:
-                return 3.;
-            case AUTHOR:
-            case EDITOR:
-                return 2.5;
-            case JOURNAL:
-                return 2.;
-            default:
-                return 1.;
-        }
+        return switch (type) {
+            case TITLE -> 3.;
+            case AUTHOR, EDITOR -> 2.5;
+            case JOURNAL -> 2.;
+            default -> 1.;
+        };
     }
 
     private static String convertAuthorField(String authors) {

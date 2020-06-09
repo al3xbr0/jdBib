@@ -18,14 +18,13 @@ class BibParserTest {
                 .addField(new FieldWrapper("year", "1994"))
                 .addField("publisher", "McGraw-Hill Education");
         try {
-            String in = "@BOOK{Kundur-1994,\n" +
-                    "  title={Power System Stability and Control " +
-                    "  " +
-                    "  },\n" +
-                    "  Author={Kundur, P.},\n" +
-                    "  year=1994,\n" +
-                    "  publisher={McGraw-Hill Education},\n" +
-                    "}";
+            String in = """
+                          @BOOK{Kundur-1994,
+                          title={Power System Stability and Control     },
+                          Author={Kundur, P.},
+                          year=1994,
+                          publisher={McGraw-Hill Education},
+                        }""";
             BibParser parser = new BibParser(in);
             BibFile result = parser.parse();
             var actual = result.getEntries().get(0);
@@ -40,18 +39,20 @@ class BibParserTest {
 
     @Test
     void parseIncorrectInput() {
-        String in = "@BOOK{Kundur-1994,\n" +
-                "  title=\"Power System Stability and Control\n" +
-                "}";
+        String in = """
+                      @BOOK{Kundur-1994,
+                        title="Power System Stability and Control
+                      }""";
         BibParser parser = new BibParser(in);
         assertThrows(BibParserException.class, parser::parse);
     }
 
     @Test
     void parseIllegalFieldInput() {
-        String in = "@BOOK{Kundur-1994,\n" +
-                "  testfield={testvalue}\n" +
-                "}";
+        String in = """
+                      @BOOK{Kundur-1994,
+                        testfield={testvalue}
+                      }""";
         BibParser parser = new BibParser(in);
         assertThrows(BibParserException.class, parser::parse);
     }
