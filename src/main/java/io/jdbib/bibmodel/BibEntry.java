@@ -92,4 +92,13 @@ public class BibEntry {
     public int hashCode() {
         return Objects.hash(type, key, fields);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("@" + type.getName() + "{" + key);
+        fields.forEach((key, value) ->
+                sb.append(",\n").append(key.getName()).append(" = {").append(value).append("}"));
+        sb.append("\n}");
+        return sb.toString();
+    }
 }

@@ -3,7 +3,7 @@ package io.jdbib.bibmodel.types;
 public enum FieldType {
     ADDRESS("address"),
     ANNOTE("annote"),
-    AUTHOR("Author"),
+    AUTHOR("author"),
     BOOKTITLE("booktitle"),
     CHAPTER("chapter"),
     CROSSREF("crossref"),

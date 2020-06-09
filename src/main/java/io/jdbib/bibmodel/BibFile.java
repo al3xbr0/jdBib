@@ -26,4 +26,18 @@ public class BibFile {
         this.strings = strings;
         this.entries = entries;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (!comments.isEmpty()) {
+            sb.append("@comment{\n");
+            comments.forEach(sb::append);
+            sb.append("}\n");
+        }
+        strings.forEach((key, value) ->
+                sb.append("@string{").append(key).append(" = \"").append(value).append("\"}"));
+        entries.forEach(entry -> sb.append("\n").append(entry));
+        return sb.toString();
+    }
 }
