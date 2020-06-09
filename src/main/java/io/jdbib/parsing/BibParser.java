@@ -32,18 +32,10 @@ public class BibParser {
             String d = directive().toUpperCase();
             match('{');
             switch (d) {
-                case "@COMMENT":
-                    comment();
-                    break;
-                case "@STRING":
-                    string();
-                    break;
-                case "@PREAMBLE":
-                    valueBuild();
-                    break;
-                default:
-                    entryBody(d);
-                    break;
+                case "@COMMENT" -> comment();
+                case "@STRING" -> string();
+                case "@PREAMBLE" -> valueBuild();
+                default -> entryBody(d);
             }
             match('}');
         }
@@ -212,7 +204,7 @@ public class BibParser {
 
     private void string() throws BibParserException {
         FieldWrapper kv = fieldBuilder();
-        strings.put(kv.getKey(), kv.getValue());
+        strings.put(kv.key(), kv.value());
     }
 
     private void comment() throws BibParserException {
