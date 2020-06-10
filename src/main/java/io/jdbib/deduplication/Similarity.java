@@ -9,8 +9,8 @@ public final class Similarity {
     }
 
     public static double compareWordByWord(String s1, String s2) {
-        s1 = s1.toLowerCase();
-        s2 = s2.toLowerCase();
+        s1 = s1.strip().toLowerCase();
+        s2 = s2.strip().toLowerCase();
         String[] w1 = s1.split("\\s");
         String[] w2 = s2.split("\\s");
         int minSize = Math.min(w1.length, w2.length);
@@ -25,14 +25,14 @@ public final class Similarity {
         return 1. - (double) misses / (double) minSize;
     }
 
-    private static double calculateSimilarity(String str1, String str2) {
+    private static double calculateSimilarity(String s1, String s2) {
         String shorter, longer;
-        if (str1.length() < str2.length()) {
-            shorter = str1;
-            longer = str2;
+        if (s1.length() < s2.length()) {
+            shorter = s1;
+            longer = s2;
         } else {
-            shorter = str2;
-            longer = str1;
+            shorter = s2;
+            longer = s1;
         }
         int longerLength = longer.length();
 

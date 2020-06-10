@@ -22,18 +22,15 @@ public class DuplicatesSearch {
         this.entries = file.getEntries();
     }
 
-    public Queue<List<BibEntry>> search() {
-        Queue<List<BibEntry>> duplicates = new LinkedList<>();
+    public List<DuplicatesPair> search() {
+        List<DuplicatesPair> duplicates = new ArrayList<>();
         for (int i = 0; i < entries.size() - 1; i++) {
             for (int j = i + 1; j < entries.size(); j++) {
                 entry1 = entries.get(i);
                 entry2 = entries.get(j);
 
                 if (currentEntriesAreDuplicates()) {
-                    LinkedList<BibEntry> duplicatesPair = new LinkedList<>();
-                    duplicatesPair.addFirst(entry1);
-                    duplicatesPair.addLast(entry2);
-                    duplicates.offer(duplicatesPair);
+                    duplicates.add(new DuplicatesPair(entry1, entry2));
                 }
             }
         }
@@ -41,12 +38,13 @@ public class DuplicatesSearch {
     }
 
     private boolean currentEntriesAreDuplicates() {
-        if (entry1.equals(entry2)) {
-            return true;
-        }
-
         fields1 = entry1.getFields();
         fields2 = entry1.getFields();
+
+        if (entry1.getType() == entry2.getType()
+                && fields1.equals(fields2)) {
+            return true;
+        }
 
         for (FieldType type : ID_TYPES) {
             if (fieldsAreEqual(type)) {
@@ -54,6 +52,7 @@ public class DuplicatesSearch {
             }
         }
 
+        //special checks
         boolean haveDifferentChaptersOrPagesInOneEntry
                 = fieldsAreEqual(AUTHOR) && fieldsAreEqual(TITLE)
                 && (!fieldsAreEqual(PAGES) || !fieldsAreEqual(CHAPTER));
@@ -71,29 +70,30 @@ public class DuplicatesSearch {
     private boolean fieldsAreEqual(FieldType type) {
         String field1 = fields1.get(type);
         String field2 = fields2.get(type);
-        double similarity;
+
         switch (type) {
-            case DOI, EPRINT, ISBN: //TODO
+            //here we check strings for "equality"
+            case DOI, EPRINT, ISBN: //TODO: add more identificator types
                 return field1 != null
                         && field1.equals(field2);
             case EDITION:
-                if (field1 == null || field2 == null) {
-                    return true;
-                }
-                return field1.equals(field2);
+                //special check whether editions are different or not
+                return field1 == null || field2 == null
+                        || field1.equals(field2);
             case AUTHOR:
+                //special check for author
                 if (field1 == null || field2 == null) {
                     return false;
                 }
-                String authors1 = convertAuthorField(field1);
-                String authors2 = convertAuthorField(field2);
-                similarity = Similarity.compareWordByWord(authors1, authors2);
-                return similarity > 0.8;
+                field1 = convertAuthorField(field1);
+                field2 = convertAuthorField(field2);
             case TITLE:
+                //special check for title
                 if (field1 == null || field2 == null) {
                     return false;
                 }
             case PAGES:
+                //special check for pages
                 if (field1 == null || field2 == null) {
                     return true;
                 }
@@ -101,15 +101,14 @@ public class DuplicatesSearch {
                 String pages2 = field2.strip().replaceAll("[- ]+", "-");
                 return pages1.equals(pages2);
             case CHAPTER:
+                //special check for chapters
                 if (field1 == null || field2 == null) {
                     return true;
                 }
-                String chapter1 = field1.strip().toLowerCase().replaceAll("\\schapter", "");
-                String chapter2 = field2.strip().toLowerCase().replaceAll("\\schapter", "");
-                similarity = Similarity.compareWordByWord(chapter1, chapter2);
-                return similarity > 0.8;
+
             default:
-                similarity = Similarity.compareWordByWord(field1.trim(), field2.trim());
+                //here we check strings for "similarity"
+                double similarity = Similarity.compareWordByWord(field1, field2);
                 return similarity > 0.8;
         }
     }
@@ -142,11 +141,11 @@ public class DuplicatesSearch {
     private static String convertAuthorField(String authors) {
         boolean moreThanOne = authors.contains(" and ");
         if (moreThanOne) {
-            List<String> authorsList = new ArrayList<>(Arrays.asList(authors.toLowerCase().split(" and ")));
+            List<String> authorsList = Arrays.asList(authors.toLowerCase().split("\\sand\\s"));
             authorsList.replaceAll(String::strip);
             Collections.sort(authorsList);
             return String.join(" ", authorsList);
         }
-        return authors.strip();
+        return authors;
     }
 }
