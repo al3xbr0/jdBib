@@ -8,60 +8,35 @@ import java.util.Map;
 
 public class BibEntry {
     private final EntryType type;
-    private String key;
+    private String citeKey;
     private final Map<FieldType, String> fields = new EnumMap<>(FieldType.class);
-    /*{
-        @Override
-        public String get(Object key) {
-            if (key.getClass() == FieldType.class)
-            return super.get(FieldType.valueOf((String) key));
-        }
-
-        @Override
-        public String put(FieldType key, String value) {
-            return super.put(key, value);
-        }
-
-
-        public String getV(String key) {
-            return super.get(FieldType.valueOf( key));
-        }
-    };
-    public static class EFields extends EnumMap<FieldType, String>{
-        public EFields() {
-            super(FieldType.class);
-        }
-        public String getValue(String key){return ""; }
-
-    }
-    private final EFields fields = new EFields();*/
 
     public EntryType getType() {
         return type;
     }
 
-    public String getKey() {
-        return key;
+    public String getCiteKey() {
+        return citeKey;
     }
 
-    public void setKey(String key) {
-        if (key == null || key.isBlank()) {
+    public void setCiteKey(String citeKey) {
+        if (citeKey == null || citeKey.isBlank()) {
             throw new IllegalArgumentException("Empty key");
         }
-        this.key = key;
+        this.citeKey = citeKey;
     }
 
     public Map<FieldType, String> getFields() {
         return new EnumMap<>(fields);
     }
 
-    public BibEntry(EntryType type, String key) {
+    public BibEntry(EntryType type, String citeKey) {
         this.type = type;
-        setKey(key);
+        setCiteKey(citeKey);
     }
 
-    public BibEntry(String type, String key) {
-        this(EntryType.valueOf(type.toUpperCase()), key);
+    public BibEntry(String type, String citeKey) {
+        this(EntryType.valueOf(type.toUpperCase()), citeKey);
     }
 
     public BibEntry addField(FieldWrapper field) {
@@ -79,7 +54,7 @@ public class BibEntry {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("@" + type.getName() + "{" + key);
+        StringBuilder sb = new StringBuilder("@" + type.getName() + "{" + citeKey);
         fields.forEach((key, value) ->
                 sb.append(",\n").append(key.getName()).append(" = {").append(value).append("}"));
         sb.append("\n}");
@@ -94,14 +69,14 @@ public class BibEntry {
         BibEntry bibEntry = (BibEntry) o;
 
         if (type != bibEntry.type) return false;
-        if (!key.equals(bibEntry.key)) return false;
+        if (!citeKey.equals(bibEntry.citeKey)) return false;
         return fields.equals(bibEntry.fields);
     }
 
     @Override
     public int hashCode() {
         int result = type.hashCode();
-        result = 31 * result + key.hashCode();
+        result = 31 * result + citeKey.hashCode();
         result = 31 * result + fields.hashCode();
         return result;
     }

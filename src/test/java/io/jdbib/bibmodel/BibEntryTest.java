@@ -18,7 +18,7 @@ class BibEntryTest {
 
         var fields = entry.getFields();
         assertEquals(EntryType.BOOK, entry.getType());
-        assertEquals("Kundur-1994", entry.getKey());
+        assertEquals("Kundur-1994", entry.getCiteKey());
         assertEquals("Power System Stability and Control", fields.get(FieldType.TITLE));
         assertEquals("Kundur, P.", fields.get(FieldType.AUTHOR));
         assertEquals("1994", fields.get(FieldType.YEAR));
@@ -30,6 +30,6 @@ class BibEntryTest {
         assertThrows(IllegalArgumentException.class, () -> new BibEntry(EntryType.ARTICLE, "  "));
 
         BibEntry entry = new BibEntry(EntryType.BOOK, "key");
-        assertEquals("key", entry.getKey());
+        assertEquals("key", entry.getCiteKey());
     }
 }
