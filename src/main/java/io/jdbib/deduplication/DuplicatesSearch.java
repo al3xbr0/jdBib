@@ -40,6 +40,9 @@ public class DuplicatesSearch {
     private boolean currentEntriesAreDuplicates() {
         fields1 = entry1.getFields();
         fields2 = entry1.getFields();
+        if (fields1.isEmpty() || fields2.isEmpty()) {
+            return false;
+        }
 
         if (entry1.getType() == entry2.getType()
                 && fields1.equals(fields2)) {

@@ -31,6 +31,9 @@ public class BibEntry {
     }
 
     public BibEntry(EntryType type, String citeKey) {
+        if (type == null){
+            throw new NullPointerException();
+        }
         this.type = type;
         setCiteKey(citeKey);
     }
